@@ -141,4 +141,33 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			throw new RRException("新增用户所选角色，不是本人创建");
 		}
 	}
+
+	public static void main(String[] args) {
+//		System.out.println(new Sha256Hash("admin", "YzcmCZNvbXocrsz9dm8e").toHex());
+		System.out.println(PMT1(0.085/12,11,-60000,60000/(1+0.085/12),0));
+	}
+
+	public static double calculatePMT(double rate, double nper, double pv) {
+		double v = (1 + (rate / 12));
+		double t = (-(nper / 12) * 12);
+		double result = (pv * (rate / 12)) / (1 - Math.pow(v, t));
+		return result;
+	}
+
+	public static double  PMT (double ir, double np,double pv,double fv ) {
+ /*
+ ir - interest rate per month
+ np - number of periods (months)
+ pv - present value
+ fv - future value (residual value)
+ type - 0 or 1 need to implement that
+ */
+		double pmt = ( ir * ( pv * Math.pow ( (ir+1), np ) + fv ) ) / ( ( ir + 1 ) * ( Math.pow ( (ir+1), np) -1 ) );
+		return pmt;
+	}
+
+	public static double PMT1(double RATE,  int NPER, int PV, double FV, int TYPE)
+	{
+		return -RATE * (FV + PV * Math.pow(1 + RATE, NPER)) / ((Math.pow(1 + RATE, NPER) - 1) * (1 + RATE * TYPE));
+	}
 }

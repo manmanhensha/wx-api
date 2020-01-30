@@ -1,5 +1,10 @@
 package com.github.niefy.modules.wx.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.niefy.common.utils.PageUtils;
+import com.github.niefy.common.utils.Query;
 import com.github.niefy.modules.wx.dao.WxQrCodeMapper;
 import com.github.niefy.modules.wx.entity.WxQrCodeEntity;
 import com.github.niefy.modules.wx.form.WxQrCodeForm;
@@ -9,15 +14,10 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.niefy.common.utils.PageUtils;
-import com.github.niefy.common.utils.Query;
-import org.springframework.util.StringUtils;
 
 
 @Service("wxQrCodeService")
@@ -54,7 +54,7 @@ public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCodeEnt
         wxQrCodeEntity.setTicket(ticket.getTicket());
         wxQrCodeEntity.setUrl(ticket.getUrl());
         if(form.getIsTemp()){
-            wxQrCodeEntity.setExpireTime(new Date(new Date().getTime()+ticket.getExpireSeconds()*1000L));
+            wxQrCodeEntity.setExpireTime(new Date(System.currentTimeMillis()+ticket.getExpireSeconds()*1000L));
         }
         this.save(wxQrCodeEntity);
         return  ticket;
